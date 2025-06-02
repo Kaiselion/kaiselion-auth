@@ -10,6 +10,7 @@ import {
   SheetTrigger
 } from '@/components/ui/sheet'
 import { LINKS } from '@/constants/navigation'
+import { authClient } from '@/lib/auth-client'
 
 interface MobileNavProps {
   session: any
@@ -47,6 +48,18 @@ export default function MobileNav({ session }: MobileNavProps) {
               key={link.href}
               href={link.href}
               className='text-lg font-semibold hover:text-secondary transition-colors'
+              onClick={async (e) => {
+                e.preventDefault()
+                if (link.href.includes('/logout')) {
+                  await authClient.signOut({
+                    fetchOptions: {
+                      onSuccess: () => {
+                        window.location.href = '/login'
+                      }
+                    }
+                  })
+                }
+              }}
             >
               {link.label}
             </a>

@@ -3,7 +3,7 @@ import ModeToggle from '@/components/ModeToggle'
 import { Separator } from '@/components/ui/separator'
 import MobileNav from '@/components/shared/MobileNav'
 import { LINKS } from '@/constants/navigation'
-
+import { authClient } from '@/lib/auth-client'
 import { auth } from "@/lib/auth";
  
 const session = await auth.api.getSession({
@@ -57,3 +57,23 @@ const filteredLinks = LINKS.filter(link => {
 		@apply font-bold hover:text-secondary dark:hover:text-secondary;
 	}
 </style>
+
+<script>
+	import { authClient } from '@/lib/auth-client'
+	const navBar = document.querySelector('nav') as HTMLElement
+	navBar.addEventListener('click', async (e) => {
+    if (e.target instanceof HTMLAnchorElement) {
+      e.preventDefault()
+      const href = e.target.href
+      if (href.includes('/logout')) {
+        await authClient.signOut({
+          fetchOptions: {
+            onSuccess: () => {
+              window.location.href = '/login'
+            }
+          }
+        })
+      }
+    }
+  })
+</script>

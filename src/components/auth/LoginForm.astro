@@ -94,8 +94,9 @@ import { Toaster } from "@/components/shared/Toaster"
 </div>
 
 <script>
-  import { actions, isInputError } from 'astro:actions'
   import { toast } from "sonner"
+  import { authClient } from '@/lib/auth-client'
+  import { getErrorMessage } from '@/lib/errors'
   
     const form = document.querySelector('form') as HTMLFormElement
   
@@ -103,30 +104,24 @@ import { Toaster } from "@/components/shared/Toaster"
       e.preventDefault()
   
       const formData = new FormData(form)
-      const { data, error } = await actions.loginUserAction(formData)
+      const { data, error } = await authClient.signIn.email({
+        email: formData.get('email') as string,
+        password: formData.get('password') as string,
+      })
   
       if (error) {
-        if (isInputError(error)) {
-          if (error.fields.password) {
-            toast.error(error.fields.password.join(', '))
-          }
-          if (error.fields.email) {
-            toast.error(error.fields.email.join(', '))
-          }
-          return
-        }
-        toast.error(error.message)
+        toast.error(getErrorMessage(error.message ?? 'Error Desconocido', 'es'))
         return
       }
-      if (data?.success) {
-      toast.success('Inicio de sesión exitoso')
-      form.reset()
-      
-      // Redirigir al dashboard después de un breve delay
-      setTimeout(() => {
-        window.location.href = '/dashboard'
-      }, 1000)
-    }
+      if (data) {
+        toast.success('Inicio de sesión exitoso')
+        form.reset()
+        
+        // Redirigir al dashboard después de un breve delay
+        setTimeout(() => {
+          window.location.href = '/dashboard'
+        }, 1000)
+      }
     })
   
   </script>
