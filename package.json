@@ -9,6 +9,10 @@
     "astro": "astro",
     "postinstall": "prisma generate"
   },
+  "prisma:inline": "cp ./node_modules/.prisma/client/*.js ./node_modules/@prisma/client",
+  "prisma:migrate": "prisma migrate deploy && npm run prisma:inline",
+  "prisma:migrate:dev": "prisma migrate dev && npm run prisma:inline",
+  "prisma:generate": "prisma generate && npm run prisma:inline",
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/netlify": "^6.3.4",
