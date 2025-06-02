@@ -49,8 +49,8 @@ export default function MobileNav({ session }: MobileNavProps) {
               href={link.href}
               className='text-lg font-semibold hover:text-secondary transition-colors'
               onClick={async (e) => {
-                e.preventDefault()
                 if (link.href.includes('/logout')) {
+                  e.preventDefault()
                   await authClient.signOut({
                     fetchOptions: {
                       onSuccess: () => {

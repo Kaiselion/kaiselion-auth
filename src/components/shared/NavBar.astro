@@ -63,9 +63,9 @@ const filteredLinks = LINKS.filter(link => {
 	const navBar = document.querySelector('nav') as HTMLElement
 	navBar.addEventListener('click', async (e) => {
     if (e.target instanceof HTMLAnchorElement) {
-      e.preventDefault()
-      const href = e.target.href
+			const href = e.target.href
       if (href.includes('/logout')) {
+				e.preventDefault()
         await authClient.signOut({
           fetchOptions: {
             onSuccess: () => {
