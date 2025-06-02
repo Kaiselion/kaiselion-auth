@@ -3,10 +3,14 @@ import { prismaAdapter } from 'better-auth/adapters/prisma'
 // If your Prisma file is located elsewhere, you can change the path
 import { PrismaClient } from '@prisma/client'
 
-const prisma = globalThis.prisma || new PrismaClient()
+declare global {
+  var prisma: PrismaClient | undefined
+}
+
+const prisma = global.prisma || new PrismaClient()
 
 if (process.env.NODE_ENV !== 'production') {
-  globalThis.prisma = prisma
+  global.prisma = prisma
 }
 
 export const auth = betterAuth({
