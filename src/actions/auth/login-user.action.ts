@@ -1,14 +1,12 @@
 import { defineAction, ActionError } from 'astro:actions'
 import { z } from 'astro:schema'
-import { auth, getErrorMessage } from '@/lib/auth'
+import { getErrorMessage, auth } from '@/lib/auth'
+// import { authClient } from '@/lib/auth-client'
 import { APIError } from 'better-auth/api'
 
-export const registerUserAction = defineAction({
+export const loginUserAction = defineAction({
   accept: 'form',
   input: z.object({
-    name: z.string().min(3, {
-      message: 'El nombre debe tener al menos 3 caracteres'
-    }),
     email: z.string().email({
       message: 'Por favor ingresa un email válido'
     }),
@@ -16,11 +14,10 @@ export const registerUserAction = defineAction({
       message: 'La contraseña debe tener al menos 8 caracteres'
     })
   }),
-  handler: async ({ name, email, password }) => {
+  handler: async ({ email, password }, { cookies }) => {
     try {
-      const user = await auth.api.signUpEmail({
+      const session = await auth.api.signInEmail({
         body: {
-          name,
           email,
           password
         }
@@ -28,7 +25,7 @@ export const registerUserAction = defineAction({
 
       return {
         success: true,
-        user
+        user: session.user
       }
     } catch (error) {
       // Si es un error de la API de Better Auth

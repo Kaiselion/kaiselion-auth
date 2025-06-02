@@ -12,3 +12,5 @@ export const auth = betterAuth({
     enabled: true
   }
 })
+
+export * from './errors'

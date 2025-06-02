@@ -10,9 +10,11 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Toaster } from "@/components/shared/Toaster"
 ---
 
 <div class="flex flex-col gap-6">
+  <Toaster client:load />
   <Card>
     <CardHeader className="text-center">
       <CardTitle className="text-xl">Bienvenido de nuevo</CardTitle>
@@ -97,7 +99,8 @@ import { Label } from "@/components/ui/label"
 
 
 <script>
-import { actions } from 'astro:actions'
+import { actions, isInputError } from 'astro:actions'
+import { toast } from "sonner"
 
   const form = document.querySelector('form') as HTMLFormElement
 
@@ -105,14 +108,29 @@ import { actions } from 'astro:actions'
     e.preventDefault()
 
     const formData = new FormData(form)
-    const {data, error} = await actions.registerUserAction(formData)
+    const { error } = await actions.registerUserAction(formData)
 
     if (error) {
-      console.error(error)
+      if (isInputError(error)) {
+        if (error.fields.password) {
+          toast.error(error.fields.password.join(', '))
+        }
+        if (error.fields.email) {
+          toast.error(error.fields.email.join(', '))
+        }
+        if (error.fields.name) {
+          toast.error(error.fields.name.join(', '))
+        }
+        return
+      }
+      toast.error(error.message)
+      return
     }
-
-    if (data) {
-      console.log(data)
-    }
+    toast.success('Usuario registrado correctamente')
+    form.reset()
+    setTimeout(() => {
+      window.location.href = '/login'
+    }, 2000)
   })
+
 </script>

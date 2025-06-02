@@ -10,9 +10,11 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Toaster } from "@/components/shared/Toaster"
 ---
 
 <div class="flex flex-col gap-6">
+  <Toaster client:load />
   <Card>
     <CardHeader className="text-center">
       <CardTitle className="text-xl">Bienvenido de nuevo</CardTitle>
@@ -53,6 +55,7 @@ import { Label } from "@/components/ui/label"
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="m@example.com"
                 required
@@ -68,7 +71,7 @@ import { Label } from "@/components/ui/label"
                   Olvidaste tu contraseña?
                 </a>
               </div>
-              <Input id="password" type="password" required />
+              <Input id="password" name="password" type="password" required />
             </div>
             <Button type="submit" className="w-full">
               Iniciar sesión
@@ -89,3 +92,41 @@ import { Label } from "@/components/ui/label"
     <a href="#">Política de privacidad</a>.
   </div>
 </div>
+
+<script>
+  import { actions, isInputError } from 'astro:actions'
+  import { toast } from "sonner"
+  
+    const form = document.querySelector('form') as HTMLFormElement
+  
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+  
+      const formData = new FormData(form)
+      const { data, error } = await actions.loginUserAction(formData)
+  
+      if (error) {
+        if (isInputError(error)) {
+          if (error.fields.password) {
+            toast.error(error.fields.password.join(', '))
+          }
+          if (error.fields.email) {
+            toast.error(error.fields.email.join(', '))
+          }
+          return
+        }
+        toast.error(error.message)
+        return
+      }
+      if (data?.success) {
+      toast.success('Inicio de sesión exitoso')
+      form.reset()
+      
+      // Redirigir al dashboard después de un breve delay
+      setTimeout(() => {
+        window.location.href = '/dashboard'
+      }, 1000)
+    }
+    })
+  
+  </script>

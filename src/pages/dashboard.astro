@@ -1,10 +1,27 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
+import { auth } from '../lib/auth' // import your Better Auth instance
+
+const session = await auth.api.getSession({
+	headers: Astro.request.headers
+})
+
+if (session) {
+	console.log('Tenemos session', session)
+} 
+
+if (!session) {
+	console.log('No tenemos session, entonces redirigimos a login')
+	return Astro.redirect('/login')
+}
+
+const user = session.user
 ---
 
 <MainLayout>
 	<div class='@container items-center text-center max-w-4xl mx-auto pt-12'>
 		<h1 class="text-3xl font-bold">Panel de control</h1>
-		<p class="text-sm text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>		
+		<p class="text-sm text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>	
+		<p class="text-sm text-gray-500">Bienvenido {user.name}</p>
 	</div>
 </MainLayout>
