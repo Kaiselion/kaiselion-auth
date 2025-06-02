@@ -3,7 +3,12 @@ import { prismaAdapter } from 'better-auth/adapters/prisma'
 // If your Prisma file is located elsewhere, you can change the path
 import { PrismaClient } from '@prisma/client'
 
+import { withAccelerate } from '@prisma/extension-accelerate'
+
 const prisma = new PrismaClient()
+// const prisma = new PrismaClient({
+//   datasourceUrl: import.meta.env.DATABASE_URL
+// }).$extends(withAccelerate())
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -11,12 +16,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true
-  },
-  trustedOrigins: [
-    // Agrega tu dominio de producción aquí
-    'https://auth.kaisel.cc',
-    'http://localhost:4321'
-  ]
+  }
 })
 
 export * from './errors'
