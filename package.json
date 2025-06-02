@@ -4,15 +4,11 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "prisma generate && astro check && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "postinstall": "prisma generate"
   },
-  "prisma:inline": "cp ./node_modules/.prisma/client/*.js ./node_modules/@prisma/client",
-  "prisma:migrate": "prisma migrate deploy && bun run prisma:inline",
-  "prisma:migrate:dev": "prisma migrate dev && bun run prisma:inline",
-  "prisma:generate": "prisma generate && bun run prisma:inline",
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/netlify": "^6.3.4",
