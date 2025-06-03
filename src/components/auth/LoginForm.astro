@@ -106,7 +106,12 @@ import { Toaster } from "@/components/shared/Toaster"
       const { data, error } = await authClient.signIn.social({
         provider: 'google',
         callbackURL: '/dashboard'
-      })
+      }, {
+        onError: (ctx) => {
+          toast.error(getErrorMessage(ctx.error.message ?? 'Error Desconocido al iniciar sesión con Google', 'es'))
+        }
+      }
+    )
 
       if (error) {
         toast.error(getErrorMessage(error.message ?? 'Error Desconocido', 'es'))
@@ -117,7 +122,12 @@ import { Toaster } from "@/components/shared/Toaster"
       const { data, error } = await authClient.signIn.social({
         provider: 'github',
         callbackURL: '/dashboard'
-      })
+      }, {
+        onError: (ctx) => {
+          toast.error(getErrorMessage(ctx.error.message ?? 'Error Desconocido al iniciar sesión con GitHub', 'es'))
+        }
+      }
+    )
 
       if (error) {
         toast.error(getErrorMessage(error.message ?? 'Error Desconocido', 'es'))
