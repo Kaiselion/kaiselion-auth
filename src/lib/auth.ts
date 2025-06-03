@@ -1,12 +1,8 @@
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
-// If your Prisma file is located elsewhere, you can change the path
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
-// const prisma = new PrismaClient({
-//   datasourceUrl: import.meta.env.DATABASE_URL
-// }).$extends(withAccelerate())
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -20,8 +16,14 @@ export const auth = betterAuth({
       prompt: 'select_account',
       clientId: import.meta.env.GOOGLE_CLIENT_ID as string,
       clientSecret: import.meta.env.GOOGLE_CLIENT_SECRET as string
+    },
+    github: {
+      prompt: 'select_account',
+      clientId: import.meta.env.GITHUB_CLIENT_ID as string,
+      clientSecret: import.meta.env.GITHUB_CLIENT_SECRET as string
     }
-  }
+  },
+  appName: 'Dashboard Auth'
 })
 
 export * from './errors'
