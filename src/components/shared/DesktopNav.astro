@@ -1,0 +1,28 @@
+---
+import { LINKS } from '@/constants/navigation'
+import { auth } from '@/lib/auth'
+
+const session = await auth.api.getSession({
+	headers: Astro.request.headers
+})
+
+const filteredLinks = LINKS.filter((link) => {
+	if (link.showAlways) return true
+	if (session && link.showOnlyWhenLoggedIn) return true
+	if (!session && link.showOnlyWhenLoggedOut) return true
+	return false
+})
+---
+
+<nav class='flex items-center gap-8'>
+	{
+		filteredLinks.map((link) => (
+			<a
+				href={link.href}
+				class='font-semibold hover:text-secondary transition-colors'
+			>
+				{link.label}
+			</a>
+		))
+	}
+</nav>

@@ -1,0 +1,89 @@
+---
+import ModeToggle from '@/components/ModeToggle'
+import { Separator } from '@/components/ui/separator'
+import MobileNav from '@/components/shared/MobileNav'
+import { auth } from '@/lib/auth'
+import { UserProfileDropDown } from '@/components/shared/UserProfileDropDown'
+import { Button } from '@/components/ui/button'
+
+const session = await auth.api.getSession({
+	headers: Astro.request.headers
+})
+---
+
+<header class='sticky top-0 z-10 backdrop-blur-sm transition-all duration-300'>
+	<div
+		class='flex items-center justify-between max-w-6xl mx-auto h-14 p-4 md:px-12'
+	>
+		<!-- Branding -->
+		<div class='flex items-center justify-center'>
+			<a href='/' class='text-xl transition-colors'>Kaiselion</a>
+		</div>
+
+		<!-- Desktop Menu -->
+		<div class='hidden md:flex h-8 items-center gap-8'>
+			<!-- <DesktopNav /> -->
+			<div class='flex items-center gap-4'>
+				<ModeToggle client:load />
+				{
+					session ? (
+						<UserProfileDropDown client:load session={session} />
+					) : (
+						<>
+							<Button>
+								<a href='/login'>Iniciar Sesión</a>
+							</Button>
+							<Button>
+								<a href='/register'>Registrarse</a>
+							</Button>
+						</>
+					)
+				}
+
+				<!-- {
+					!session && (
+						<>
+							<Button>
+								<a href='/login'>Iniciar Sesión</a>
+							</Button>
+							<Button>
+								<a href='/register'>Registrarse</a>
+							</Button>
+						</>
+					)
+				}
+				{session && <UserProfileDropDown client:load session={session} />} -->
+			</div>
+		</div>
+
+		<!-- Mobile Menu -->
+		<div class='md:hidden flex items-center gap-4'>
+			<ModeToggle client:load />
+			<MobileNav client:load session={session} />
+			<!-- {
+				session ? (
+					<MobileNav client:load session={session} />
+				) : (
+					<>
+						<Button>
+							<a href='/login'>Iniciar Sesión</a>
+						</Button>
+						<Button>
+							<a href='/register'>Registrarse</a>
+						</Button>
+					</>
+				)
+			} -->
+			<!-- {session && <MobileNav client:load session={session} />} -->
+		</div>
+	</div>
+
+	<Separator />
+</header>
+
+<style>
+	@reference '@/styles/global.css';
+	a {
+		@apply font-bold hover:text-secondary dark:hover:text-secondary;
+	}
+</style>

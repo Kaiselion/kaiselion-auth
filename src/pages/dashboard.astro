@@ -19,9 +19,9 @@ const user = session.user
 ---
 
 <MainLayout>
-	<div class='@container items-center text-center max-w-4xl mx-auto pt-12'>
+	<div class='@container flex flex-col gap-4 items-center text-center max-w-4xl mx-auto pt-12'>
 		<h1 class="text-3xl font-bold">Panel de control</h1>
-		<p class="text-sm text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>	
-		<p class="text-sm text-gray-500">Bienvenido {user.name}</p>
+		<h2 class="text-xl text-gray-400">Bienvenido {user.name}</h2>
+		<p class="text-md text-gray-500"> { user.email }</p>
 	</div>
 </MainLayout>
