@@ -49,7 +49,46 @@ import '@/styles/global.css'
 		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
 		<meta name='viewport' content='width=device-width' />
 		<meta name='generator' content={Astro.generator} />
-		<title>Dashboard Auth</title>
+
+		<!-- Primary Meta Tags -->
+		<title>Dashboard Auth - Sistema de Autenticación</title>
+		<meta name='title' content='Dashboard Auth - Sistema de Autenticación' />
+		<meta
+			name='description'
+			content='Sistema de autenticación moderno con soporte para múltiples proveedores como GitHub y Google. Gestiona tus sesiones de forma segura y eficiente.'
+		/>
+
+		<!-- Open Graph / Facebook -->
+		<meta property='og:type' content='website' />
+		<meta property='og:url' content={Astro.url} />
+		<meta
+			property='og:title'
+			content='Dashboard Auth - Sistema de Autenticación'
+		/>
+		<meta
+			property='og:description'
+			content='Sistema de autenticación moderno con soporte para múltiples proveedores como GitHub y Google. Gestiona tus sesiones de forma segura y eficiente.'
+		/>
+		<meta
+			property='og:image'
+			content={new URL('/images/og-image.png', Astro.url)}
+		/>
+
+		<!-- Twitter -->
+		<meta property='twitter:card' content='summary_large_image' />
+		<meta property='twitter:url' content={Astro.url} />
+		<meta
+			property='twitter:title'
+			content='Dashboard Auth - Sistema de Autenticación'
+		/>
+		<meta
+			property='twitter:description'
+			content='Sistema de autenticación moderno con soporte para múltiples proveedores como GitHub y Google. Gestiona tus sesiones de forma segura y eficiente.'
+		/>
+		<meta
+			property='twitter:image'
+			content={new URL('/images/og-image.png', Astro.url)}
+		/>
 	</head>
 	<body class='font-sans min-h-screen flex flex-col'>
 		<Header />
